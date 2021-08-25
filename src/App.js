@@ -10,7 +10,7 @@ import {
 } from "@aws-amplify/ui-react";
 import { AuthState, onAuthUIStateChange } from "@aws-amplify/ui-components";
 import awsconfig from "./aws-exports";
-import { SignInWithFacebook } from "./loginSM/loginWithFacebook.js";
+import SignInWithFacebook from "./loginSM/loginWithFacebook";
 
 import { Row } from "react-bootstrap";
 

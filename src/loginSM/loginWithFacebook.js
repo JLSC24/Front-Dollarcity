@@ -1,20 +1,19 @@
-import React, { useEffect } from "react";
 import { Auth } from "aws-amplify";
 // To federated sign in from Facebook
 class SignInWithFacebook {
-  signInFacebook = () => {
+  signInFacebook() {
     const fb = window.FB;
     fb.getLoginStatus((response) => {
       console.log(response);
       if (response.status === "connected") {
-        getAWSCredentials(response.authResponse);
+        this.getAWSCredentials(response.authResponse);
       } else {
         fb.login(
           (response) => {
             if (!response || !response.authResponse) {
               return;
             }
-            getAWSCredentials(response.authResponse);
+            this.getAWSCredentials(response.authResponse);
           },
           {
             // the authorized scopes
@@ -23,9 +22,9 @@ class SignInWithFacebook {
         );
       }
     });
-  };
+  }
 
-  getAWSCredentials = (response) => {
+  getAWSCredentials(response) {
     console.log(response);
     const { accessToken, expiresIn } = response;
     const date = new Date();
@@ -49,24 +48,24 @@ class SignInWithFacebook {
         console.log(credentials);
       });
     });
-  };
+  }
 
-  createScript = () => {
+  createScript() {
     // load the sdk
-    window.fbAsyncInit = fbAsyncInit;
+    window.fbAsyncInit = this.fbAsyncInit;
     const script = document.createElement("script");
     script.src = "https://connect.facebook.net/en_US/sdk.js";
     script.async = true;
-    script.onload = initFB;
+    script.onload = this.initFB;
     document.body.appendChild(script);
-  };
+  }
 
-  initFB = () => {
+  initFB() {
     const fb = window.FB;
     console.log("FB SDK initialized");
-  };
+  }
 
-  fbAsyncInit = () => {
+  fbAsyncInit() {
     // init the fb sdk client
     const fb = window.FB;
     fb.init({
@@ -75,7 +74,7 @@ class SignInWithFacebook {
       xfbml: true,
       version: "v2.11",
     });
-  };
+  }
 }
 
 export default SignInWithFacebook;
