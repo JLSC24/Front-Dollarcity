@@ -13,7 +13,47 @@ code {
 }
 
 :root {
-  --amplify-primary-color: #8bc34a;
-  --amplify-primary-tint: #aed581;
-  --amplify-primary-shade: #558b2f;
+  --amplify-primary-color: #4caf50;
+  --amplify-primary-tint: #8bc34a;
+  --amplify-primary-shade: #689f38;
+}
+
+.navbarCustom {
+  background-color: #8bc34a;
+  box-shadow: 60px -16px black !important;
+}
+
+.colorHeader {
+  background-color: #8bc34a !important;
+}
+
+.botonPositivo {
+  background-color: #4caf50 !important;
+  border: none !important;
+}
+.botonPositivo:hover {
+  background-color: #536dfe !important;
+  border: none !important;
+}
+
+.addToCart {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  transition: all 300ms ease 0ms;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  z-index: 99;
+}
+
+.addToCart:hover {
+  background-color: #536dfe !important; /* Color de fondo al pasar el cursor */
+  box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.3);
+  transform: translateY(-7px);
+}
+
+.notificationCart {
+  position: relative;
+  left: 13%;
+  border-radius: 50% !important;
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.3);
 }

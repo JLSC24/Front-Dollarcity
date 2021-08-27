@@ -1,5 +1,8 @@
 import React from "react";
 import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./styles.css";
+import Home from "./home.js";
 import { Amplify, Auth } from "aws-amplify";
 import {
   AmplifyAuthenticator,
@@ -106,9 +109,10 @@ const AuthStateApp = () => {
 
   return authState === AuthState.SignedIn && user ? (
     <div className="App">
-      <div>
+      <Home></Home>
+      {/* <div>
         Hello, {user.username} <AmplifySignOut />
-      </div>
+      </div> */}
     </div>
   ) : (
     <>
