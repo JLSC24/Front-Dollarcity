@@ -183,6 +183,7 @@ export default function JobAplication() {
                       </Form.Select>
                     </Form.Group>
                   </Row>
+                  <hr />
                   <Row className="mb-3">
                     <Form.Group as={Col} controlId="validationCustom02">
                       <Form.Label>Años de experiencia</Form.Label>
@@ -234,7 +235,7 @@ export default function JobAplication() {
                       <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                     </Form.Group>
                   </Row>
-
+                  <hr />
                   <Row className="mb-3">
                     <Form.Group className="mb-3" controlId="formGridAddress1">
                       <Form.Label>Dirección</Form.Label>
@@ -291,7 +292,7 @@ export default function JobAplication() {
                     />
                   </Form.Group>
 
-                  <Button variant="primary" type="submit">
+                  <Button className="botonPositivo" type="submit">
                     Enviar
                   </Button>
                 </Form>

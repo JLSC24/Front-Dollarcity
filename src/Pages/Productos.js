@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import { Button, Modal, Card, Row, Col, Badge } from "react-bootstrap";
 
+import ImageContainer from "../components/ImageContainer.js";
+
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import "bootstrap/dist/css/bootstrap.css";
@@ -68,7 +70,7 @@ export default function Products() {
               <Button variant="secondary" onClick={handleClose}>
                 Seguir comprando
               </Button>
-              <Button variant="primary" onClick={handleClose}>
+              <Button className="botonPositivo" onClick={handleClose}>
                 Ir a pagar
               </Button>
             </Modal.Footer>
@@ -154,11 +156,17 @@ export default function Products() {
                       $115
                     </div>
                     <Link to="/">
-                      <img
+                      <div>
+                        <ImageContainer
+                          src="https://source.unsplash.com/tG36rvCeqng/800x500"
+                          alt="imagen de prueba"
+                        />
+                      </div>
+                      {/* <img
                         className="card-img-top"
                         src="https://source.unsplash.com/tG36rvCeqng/800x500"
                         alt="..."
-                      />
+                      /> */}
                     </Link>
 
                     <div className="card-body p-3">
