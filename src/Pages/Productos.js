@@ -158,7 +158,7 @@ export default function Products() {
                     <Link to="/">
                       <div>
                         <ImageContainer
-                          src="https://source.unsplash.com/tG36rvCeqng/800x500"
+                          src="https://source.unsplash.com/tG36rvCeqng/400x250"
                           alt="imagen de prueba"
                         />
                       </div>
