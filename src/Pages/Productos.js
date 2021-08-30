@@ -13,12 +13,19 @@ export default function Products() {
   const [dataProducts, setDataProducts] = React.useState();
   const [show, setShow] = React.useState(false);
   const [productsShoppingCar, setProductsShoppingCar] = React.useState([]);
+  const [images, setImages] = React.useState([]);
+  const [page, setPage] = React.useState(1);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const addToShoppingCar = () => {
     console.log("Añadir al carrito");
+  };
+  const onIsVisible = (index) => {
+    if (index === images.length - 1) {
+      setPage((page) => page + 1);
+    }
   };
   return (
     <div id="layoutDefault">
@@ -160,6 +167,7 @@ export default function Products() {
                         <ImageContainer
                           src="https://source.unsplash.com/tG36rvCeqng/400x250"
                           alt="imagen de prueba"
+                          onIsVisible={() => onIsVisible(1)}
                         />
                       </div>
                       {/* <img

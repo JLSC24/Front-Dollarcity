@@ -16,6 +16,12 @@ import awsconfig from "./aws-exports";
 
 import { Row } from "react-bootstrap";
 
+const federated = {
+  googleClientId:
+    "822255356075-bsbp76ucrnbslklj8rh69cbhr9phvh4m.apps.googleusercontent.com", // Enter your googleClientId here
+  facebookAppId: "541409930434877", // Enter your facebookAppId here
+};
+
 Amplify.configure(awsconfig);
 
 const AuthStateApp = () => {
@@ -23,13 +29,70 @@ const AuthStateApp = () => {
   const [user, setUser] = React.useState();
 
   React.useEffect(() => {
-    if (!window.FB) createScript();
+    /* if (!window.FB) createScript();
+
+    const ga =
+      window.gapi && window.gapi.auth2
+        ? window.gapi.auth2.getAuthInstance()
+        : null;
+
+    if (!ga) createScriptGoogle();
 
     return onAuthUIStateChange((nextAuthState, authData) => {
       setAuthState(nextAuthState);
       setUser(authData);
-    });
+    }); */
   }, []);
+
+  const signInGoogle = () => {
+    const ga = window.gapi.auth2.getAuthInstance();
+    ga.signIn().then(
+      (googleUser) => {
+        getAWSCredentialsGoogle(googleUser);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  };
+
+  const getAWSCredentialsGoogle = async (googleUser) => {
+    const { id_token, expires_at } = googleUser.getAuthResponse();
+    const profile = googleUser.getBasicProfile();
+    let user = {
+      email: profile.getEmail(),
+      name: profile.getName(),
+    };
+
+    const credentials = await Auth.federatedSignIn(
+      "google",
+      { token: id_token, expires_at },
+      user
+    );
+    console.log("credentials", credentials);
+  };
+
+  const createScriptGoogle = () => {
+    // load the Google SDK
+    const script = document.createElement("script");
+    script.src = "https://apis.google.com/js/platform.js";
+    script.async = true;
+    script.onload = initGapiGoogle;
+    document.body.appendChild(script);
+  };
+
+  const initGapiGoogle = () => {
+    // init the Google SDK client
+    const g = window.gapi;
+    g.load("auth2", function () {
+      g.auth2.init({
+        client_id:
+          "822255356075-bsbp76ucrnbslklj8rh69cbhr9phvh4m.apps.googleusercontent.com",
+        // authorized scopes
+        scope: "profile email openid",
+      });
+    });
+  };
 
   const signIn = () => {
     const fb = window.FB;
@@ -117,17 +180,16 @@ const AuthStateApp = () => {
   ) : (
     <>
       <Row className="mb-3">
-        <AmplifyAuthenticator>
-          <AmplifySignIn headerText="My Custom Sign In Text" slot="sign-in">
+        {/* <AmplifyAuthenticator>
+          <AmplifySignIn headerText="Dollarcity" slot="sign-in">
             <div slot="federated-buttons">
-              <AmplifyGoogleButton
-                onClick={() => Auth.federatedSignIn({ provider: "Google" })}
-              />
+              <AmplifyGoogleButton onClick={signInGoogle} />
               <AmplifyFacebookButton onClick={signIn} />
               <hr />
             </div>
           </AmplifySignIn>
-        </AmplifyAuthenticator>
+        </AmplifyAuthenticator> */}
+        <AmplifyAuthenticator federated={federated}></AmplifyAuthenticator>
       </Row>
     </>
   );

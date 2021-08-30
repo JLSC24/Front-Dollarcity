@@ -57,3 +57,7 @@ code {
   border-radius: 50% !important;
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.3);
 }
+
+amplify-authenticator {
+  background-color: #4caf50;
+}
