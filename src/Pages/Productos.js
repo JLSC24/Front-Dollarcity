@@ -1,13 +1,15 @@
-import React, { useEffect } from "react";
+import React, { lazy } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import { Button, Modal, Card, Row, Col, Badge } from "react-bootstrap";
 
-import ImageContainer from "../components/ImageContainer.js";
+/* import ImageContainer from "../components/ImageContainer.js"; */
 
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import "bootstrap/dist/css/bootstrap.css";
+
+const ImageContainer = lazy(() => import("../components/ImageContainer.js"));
 
 export default function Products() {
   const [dataProducts, setDataProducts] = React.useState();
