@@ -29,8 +29,7 @@ const AuthStateApp = () => {
   const [user, setUser] = React.useState();
 
   React.useEffect(() => {
-    console.log(AuthState.SignedIn);
-    /* if (!window.FB) createScript();
+    if (!window.FB) createScript();
 
     const ga =
       window.gapi && window.gapi.auth2
@@ -42,7 +41,7 @@ const AuthStateApp = () => {
     return onAuthUIStateChange((nextAuthState, authData) => {
       setAuthState(nextAuthState);
       setUser(authData);
-    }); */
+    });
   }, []);
 
   const signInGoogle = () => {
@@ -181,7 +180,7 @@ const AuthStateApp = () => {
   ) : (
     <>
       <Row className="mb-3">
-        {/* <AmplifyAuthenticator>
+        <AmplifyAuthenticator>
           <AmplifySignIn headerText="Dollarcity" slot="sign-in">
             <div slot="federated-buttons">
               <AmplifyGoogleButton onClick={signInGoogle} />
@@ -189,8 +188,8 @@ const AuthStateApp = () => {
               <hr />
             </div>
           </AmplifySignIn>
-        </AmplifyAuthenticator> */}
-        <AmplifyAuthenticator federated={federated}></AmplifyAuthenticator>
+        </AmplifyAuthenticator>
+        {/* <AmplifyAuthenticator federated={federated}></AmplifyAuthenticator> */}
       </Row>
     </>
   );
