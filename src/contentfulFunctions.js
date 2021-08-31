@@ -5,8 +5,8 @@ const client = ContentfulClient({
   accessToken: "IG_hT2-83sdOr8oFdvpz0Rd9NCyhZ1SM9tgHqMlgdGo",
 });
 
-export async function getProducts() {
-  const entries = await client.getEntries({ content_type: "producto" });
+export async function getPuesto() {
+  const entries = await client.getEntries({ content_type: "puestoTrabajo" });
   return entries.items;
 }
 

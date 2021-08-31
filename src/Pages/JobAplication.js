@@ -1,10 +1,13 @@
 import React, { useEffect } from "react";
 
 import { Button, Row, Col, Form, InputGroup } from "react-bootstrap";
+import { getPuesto } from "../contentfulFunctions";
 
 export default function JobAplication() {
   const [dataLugares, setDataLugares] = React.useState(null);
+  const [dataPuestos, setDataPuestos] = React.useState(null);
   const [dataCiudad, setDataCiudad] = React.useState(null);
+  const [datDescripcion, setDatDescripcion] = React.useState(null);
 
   useEffect(() => {
     const fetchdata = async () => {
@@ -20,12 +23,36 @@ export default function JobAplication() {
       let data = await result.json();
       setDataLugares(data);
     };
+    const getDatPuestos = async () => {
+      const result = await getPuesto();
+      let data = result;
+      console.log(data);
+      setDataPuestos(data);
+    };
+    getDatPuestos();
     fetchdata();
   }, []);
 
   const cambiarCiudad = () => {
     let dep = document.getElementById("departamento").value;
     setDataCiudad(dataLugares[dep].ciudades);
+  };
+
+  const cambiarPuesto = () => {
+    let puesto = document.getElementById("puesto").value;
+    console.log(puesto);
+    if (dataPuestos !== null) {
+      dataPuestos.map((dat) => {
+        if (dat.fields.nombre === puesto) {
+          setDatDescripcion({
+            description: dat.fields.descripcion,
+            salario: dat.fields.salario,
+          });
+          return null;
+        }
+        return null;
+      });
+    }
   };
 
   const sendData = (e) => {
@@ -46,7 +73,33 @@ export default function JobAplication() {
     };
 
     console.log(data);
+
+    fetch(
+      "https://uz0m3atqdi.execute-api.us-east-2.amazonaws.com/dollarcity-api/job-applications",
+      {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }
+    )
+      .then((data) =>
+        data.json().then((response) => {
+          if (data.status >= 200 && data.status < 300) {
+            console.log(data);
+          } else if (data.status >= 500) {
+            console.log(data);
+          } else if (data.status >= 400 && data.status < 500) {
+            console.log(data);
+          }
+        })
+      )
+      .catch(function (err) {
+        console.log(err);
+      });
   };
+
   return (
     <div id="layoutDefault">
       <div id="layoutDefault_content">
@@ -177,9 +230,9 @@ export default function JobAplication() {
                       <Form.Label>Genero</Form.Label>
                       <Form.Select id="gender">
                         <option value="">Seleccione su genero</option>
-                        <option value="m">Masculino</option>
-                        <option value="f">Femenino</option>
-                        <option value="o">Prefiero no decir</option>
+                        <option value="Masculino">Masculino</option>
+                        <option value="Femenino">Femenino</option>
+                        <option value="Otro">Prefiero no decir</option>
                       </Form.Select>
                     </Form.Group>
                   </Row>
@@ -207,13 +260,16 @@ export default function JobAplication() {
                     </Form.Group>
                     <Form.Group as={Col} controlId="validationCustom02">
                       <Form.Label>Puesto al que aspira</Form.Label>
-                      <Form.Select onChange={cambiarCiudad} id="jobTitle">
+                      <Form.Select onChange={cambiarPuesto} id="puesto">
                         <option value="">Elija el puesto</option>
-                        {dataLugares !== null
-                          ? dataLugares.map((data) => {
+                        {dataPuestos !== null
+                          ? dataPuestos.map((data) => {
                               return (
-                                <option value={data.id} key={data.id}>
-                                  {data.departamento}
+                                <option
+                                  value={data.fields.nombre}
+                                  key={data.sys.id}
+                                >
+                                  {data.fields.nombre}
                                 </option>
                               );
                             })
@@ -234,6 +290,19 @@ export default function JobAplication() {
                       ></textarea>
                       <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                     </Form.Group>
+                  </Row>
+
+                  <Row className="mb-3">
+                    <Form.Label>
+                      {datDescripcion !== null ? (
+                        <>
+                          <b>Descripción: </b>
+                          {datDescripcion.description} <br />
+                          <b>Salario: </b>
+                          {datDescripcion.salario}
+                        </>
+                      ) : null}
+                    </Form.Label>
                   </Row>
                   <hr />
                   <Row className="mb-3">

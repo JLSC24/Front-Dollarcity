@@ -1,4 +1,4 @@
-import React, { lazy } from "react";
+import React, { lazy, useEffect } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import { Button, Modal, Card, Row, Col, Badge } from "react-bootstrap";
@@ -8,27 +8,101 @@ import { Button, Modal, Card, Row, Col, Badge } from "react-bootstrap";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import "bootstrap/dist/css/bootstrap.css";
-
+import { Amplify, Auth } from "aws-amplify";
+import awsconfig from "../aws-exports";
+Amplify.configure(awsconfig);
 const ImageContainer = lazy(() => import("../components/ImageContainer.js"));
 
 export default function Products() {
-  const [dataProducts, setDataProducts] = React.useState();
+  const [dataProducts, setDataProducts] = React.useState(null);
   const [show, setShow] = React.useState(false);
   const [productsShoppingCar, setProductsShoppingCar] = React.useState([]);
   const [images, setImages] = React.useState([]);
   const [page, setPage] = React.useState(1);
+  const [user, setUser] = React.useState(1);
+
+  useEffect(() => {
+    const fetchdata = async () => {
+      let user = await Auth.currentAuthenticatedUser();
+      setUser(user);
+      const result = await fetch(
+        "https://uz0m3atqdi.execute-api.us-east-2.amazonaws.com/dollarcity-api/products",
+        {
+          method: "GET",
+          headers: { Accept: "application/json" },
+        }
+      );
+      let data = await result.json();
+      setDataProducts(data.body);
+    };
+
+    fetchdata();
+  }, []);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const addToShoppingCar = () => {
-    console.log("Añadir al carrito");
+  const addToShoppingCar = (data) => {
+    let temp = productsShoppingCar;
+    temp.push(data);
+    setProductsShoppingCar(temp);
   };
   const onIsVisible = (index) => {
     if (index === images.length - 1) {
       setPage((page) => page + 1);
     }
   };
+
+  const irAPagar = async () => {
+    console.log(productsShoppingCar);
+    let temp = [];
+    if (productsShoppingCar !== null) {
+      productsShoppingCar.map((data, index) => {
+        let cantidad = document.getElementById("cantidad" + index).value;
+        if (cantidad !== null && cantidad !== undefined) {
+          for (let index = 0; index < cantidad; index++) {
+            temp.push(data.producto.fields.precio);
+          }
+        }
+        return null;
+      });
+    }
+    let data = {
+      iduser: user.attributes.email,
+      costos: temp,
+    };
+
+    console.log(data);
+
+    fetch(
+      "https://uz0m3atqdi.execute-api.us-east-2.amazonaws.com/dollarcity-api/orders",
+      {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: { "Content-type": "application/json; charset=UTF-8" },
+      }
+    )
+      .then((data) =>
+        data.json().then((response) => {
+          if (data.status >= 200 && data.status < 300) {
+            console.log(response);
+            window.alert(
+              "BUENARDA! acabas de comprar: $" +
+                response.body.total +
+                "\n" +
+                " Su id de orden es: " +
+                response.body.id_orden +
+                "\n" +
+                "HAS APORTADO UN GRANITO MÁS AL CAPITALISMO."
+            );
+          } else if (data.status >= 500) {
+          } else if (data.status >= 400 && data.status < 500) {
+          }
+        })
+      )
+      .catch(function (err) {});
+  };
+
   return (
     <div id="layoutDefault">
       <div id="layoutDefault_content">
@@ -41,41 +115,63 @@ export default function Products() {
             <Modal.Body>
               <Card>
                 <Row className="align-items-center">
-                  <Col sm={3} xs={3}>
-                    <Card
-                      className="bg-dark text-white"
-                      style={{ margin: "5%" }}
-                    >
-                      <ImageContainer
-                        src="https://source.unsplash.com/tG36rvCeqng/400x250"
-                        alt="imagen de prueba"
-                        url="/img"
-                        height={208.75}
-                        width={334}
-                        onIsVisible={() => onIsVisible(1)}
-                      />
-                    </Card>
-                  </Col>
-                  <Col sm={2} xs={3}>
-                    <h6>Gray Bicycle</h6>
-                  </Col>
-                  <Col sm={2} xs={3} className="text-right">
-                    <label>Cantidad:</label>
-                  </Col>
-                  <Col sm={1} xs={3}>
-                    <input
-                      type="number"
-                      className="text-center"
-                      defaultValue={1}
-                      style={{ maxWidth: "50px" }}
-                    />
-                  </Col>
-                  <Col sm={2} xs={3}>
-                    <Button variant="danger">Quitar</Button>
-                  </Col>
-                  <Col sm={2} xs={3}>
-                    <h4>$000.00</h4>
-                  </Col>
+                  {productsShoppingCar !== null
+                    ? productsShoppingCar.map((data, index) => {
+                        return (
+                          <>
+                            <Col sm={3} xs={3}>
+                              <Card
+                                className="bg-dark text-white"
+                                style={{ margin: "5%" }}
+                              >
+                                <div>
+                                  <ImageContainer
+                                    src={
+                                      data.producto.fields.foto.fields.file.url
+                                    }
+                                    alt={
+                                      data.producto.fields.foto.fields
+                                        .description
+                                    }
+                                    url="/img"
+                                    height={
+                                      data.producto.fields.foto.fields.file
+                                        .details.image.height
+                                    }
+                                    width={
+                                      data.producto.fields.foto.fields.file
+                                        .details.image.width
+                                    }
+                                    onIsVisible={() => onIsVisible(1)}
+                                  />
+                                </div>
+                              </Card>
+                            </Col>
+                            <Col sm={2} xs={3}>
+                              <h6>{data.producto.fields.nombre}</h6>
+                            </Col>
+                            <Col sm={2} xs={3} className="text-right">
+                              <label>Cantidad:</label>
+                            </Col>
+                            <Col sm={1} xs={3}>
+                              <input
+                                type="number"
+                                className="text-center"
+                                defaultValue={1}
+                                style={{ maxWidth: "50px" }}
+                                id={"cantidad" + index}
+                              />
+                            </Col>
+                            <Col sm={2} xs={3}>
+                              <Button variant="danger">Quitar</Button>
+                            </Col>
+                            <Col sm={2} xs={3}>
+                              <h4>${data.precio}</h4>
+                            </Col>
+                          </>
+                        );
+                      })
+                    : null}
                 </Row>
               </Card>
             </Modal.Body>
@@ -83,7 +179,7 @@ export default function Products() {
               <Button variant="secondary" onClick={handleClose}>
                 Seguir comprando
               </Button>
-              <Button className="botonPositivo" onClick={handleClose}>
+              <Button className="botonPositivo" onClick={() => irAPagar()}>
                 Ir a pagar
               </Button>
             </Modal.Footer>
@@ -154,52 +250,71 @@ export default function Products() {
               <h2 className="mb-4">Artículos</h2>
               <Button className="botonPositivo addToCart" onClick={handleShow}>
                 <ShoppingCartIcon fontSize="large" />
-                <Badge bg="danger" className="notificationCart">
-                  1
-                </Badge>
+                {productsShoppingCar !== null &&
+                productsShoppingCar.length !== 0 ? (
+                  <Badge bg="danger" className="notificationCart">
+                    {productsShoppingCar.length}
+                  </Badge>
+                ) : null}
               </Button>
-
+              {/* Render de la lista de los productos */}
               <div className="row">
-                <div className="col-xl-3 col-lg-4 col-md-6 mb-5 text-center">
-                  <Card className="card lift h-100">
-                    <div
-                      className="card-flag card-flag-dark card-flag-top-right card-flag-lg"
-                      style={{ backgroundColor: "#757575" }}
-                    >
-                      $115
-                    </div>
+                {dataProducts !== null
+                  ? dataProducts.map((dat) => {
+                      return (
+                        <>
+                          <div className="col-xl-3 col-lg-4 col-md-6 mb-5 text-center">
+                            <Card className="card lift h-100">
+                              <div
+                                className="card-flag card-flag-dark card-flag-top-right card-flag-lg"
+                                style={{
+                                  backgroundColor: "#000",
+                                  zIndex: 1,
+                                }}
+                              >
+                                ${dat.precio}
+                              </div>
 
-                    <div>
-                      <ImageContainer
-                        src="https://source.unsplash.com/tG36rvCeqng/400x250"
-                        alt="imagen de prueba"
-                        url="/img"
-                        height={208.75}
-                        width={334}
-                        onIsVisible={() => onIsVisible(1)}
-                      />
-                    </div>
-                    {/* <img
-                      className="card-img-top"
-                      src="https://source.unsplash.com/tG36rvCeqng/800x500"
-                      alt="..."
-                    /> */}
+                              <div>
+                                <ImageContainer
+                                  src={dat.producto.fields.foto.fields.file.url}
+                                  alt={
+                                    dat.producto.fields.foto.fields.description
+                                  }
+                                  url="/img"
+                                  height={
+                                    dat.producto.fields.foto.fields.file.details
+                                      .image.height
+                                  }
+                                  width={
+                                    dat.producto.fields.foto.fields.file.details
+                                      .image.width
+                                  }
+                                  onIsVisible={() => onIsVisible(1)}
+                                />
+                              </div>
 
-                    <div className="card-body p-3">
-                      <div className="card-title small mb-0">Gray Bicycle</div>
-                      <div className="text-xs text-gray-500 mb-1">
-                        Readcaster, CO · 2 days ago
-                      </div>
+                              <div className="card-body p-3 align-items-bottom">
+                                <div className="card-title small mb-0">
+                                  {dat.producto.fields.nombre}
+                                </div>
+                                <div className="text-xs text-gray-500 mb-1">
+                                  {dat.producto.fields.descripcion}
+                                </div>
 
-                      <Button
-                        className="botonPositivo"
-                        onClick={() => addToShoppingCar()}
-                      >
-                        <AddShoppingCartIcon fontSize="medium" />
-                      </Button>
-                    </div>
-                  </Card>
-                </div>
+                                <Button
+                                  className="botonPositivo"
+                                  onClick={() => addToShoppingCar(dat)}
+                                >
+                                  <AddShoppingCartIcon fontSize="medium" />
+                                </Button>
+                              </div>
+                            </Card>
+                          </div>
+                        </>
+                      );
+                    })
+                  : null}
               </div>
             </div>
           </section>
