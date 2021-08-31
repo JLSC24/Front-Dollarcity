@@ -16,12 +16,6 @@ import awsconfig from "./aws-exports";
 
 import { Row } from "react-bootstrap";
 
-const federated = {
-  googleClientId:
-    "822255356075-bsbp76ucrnbslklj8rh69cbhr9phvh4m.apps.googleusercontent.com", // Enter your googleClientId here
-  facebookAppId: "541409930434877", // Enter your facebookAppId here
-};
-
 Amplify.configure(awsconfig);
 
 const AuthStateApp = () => {
@@ -29,7 +23,7 @@ const AuthStateApp = () => {
   const [user, setUser] = React.useState();
 
   React.useEffect(() => {
-    if (!window.FB) createScript();
+    /* if (!window.FB) createScript();
 
     const ga =
       window.gapi && window.gapi.auth2
@@ -41,10 +35,10 @@ const AuthStateApp = () => {
     return onAuthUIStateChange((nextAuthState, authData) => {
       setAuthState(nextAuthState);
       setUser(authData);
-    });
+    }); */
   }, []);
 
-  const signInGoogle = () => {
+  /*   const signInGoogle = () => {
     const ga = window.gapi.auth2.getAuthInstance();
     ga.signIn().then(
       (googleUser) => {
@@ -168,7 +162,7 @@ const AuthStateApp = () => {
       xfbml: true,
       version: "v2.11",
     });
-  };
+  }; */
 
   return authState === AuthState.SignedIn && user ? (
     <div className="App">
@@ -180,7 +174,7 @@ const AuthStateApp = () => {
   ) : (
     <>
       <Row className="mb-3">
-        <AmplifyAuthenticator>
+        {/* <AmplifyAuthenticator>
           <AmplifySignIn headerText="Dollarcity" slot="sign-in">
             <div slot="federated-buttons">
               <AmplifyGoogleButton onClick={signInGoogle} />
@@ -188,7 +182,7 @@ const AuthStateApp = () => {
               <hr />
             </div>
           </AmplifySignIn>
-        </AmplifyAuthenticator>
+        </AmplifyAuthenticator> */}
         {/* <AmplifyAuthenticator federated={federated}></AmplifyAuthenticator> */}
       </Row>
     </>

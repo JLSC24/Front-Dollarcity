@@ -44,10 +44,10 @@ export default function Products() {
                       className="bg-dark text-white"
                       style={{ margin: "5%" }}
                     >
-                      {/* <Card.Img
+                      <Card.Img
                         src="https://source.unsplash.com/tG36rvCeqng/800x500"
                         alt="Card image"
-                      /> */}
+                      />
                     </Card>
                   </Col>
                   <Col sm={2} xs={3}>
@@ -164,11 +164,11 @@ export default function Products() {
                     </div>
                     <Link to="/">
                       <div>
-                        {/* <ImageContainer
+                        <ImageContainer
                           src="https://source.unsplash.com/tG36rvCeqng/400x250"
                           alt="imagen de prueba"
                           onIsVisible={() => onIsVisible(1)}
-                        /> */}
+                        />
                       </div>
                       {/* <img
                         className="card-img-top"
