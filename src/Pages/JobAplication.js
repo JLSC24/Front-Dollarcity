@@ -55,27 +55,29 @@ export default function JobAplication() {
     }
   };
 
-  const sendData = (e) => {
+  const sendData = async (e) => {
     e.preventDefault();
 
-    let data = {
-      name: document.getElementById("name").value,
-      last_names: document.getElementById("lastName").value,
-      email: document.getElementById("email").value,
-      city: document.getElementById("city").value,
-      job_title: document.getElementById("jobTitle").value,
-      address: document.getElementById("address").value,
-      cc: parseInt(document.getElementById("numDocID").value),
-      gender: document.getElementById("gender").value,
-      year_experiences: parseInt(document.getElementById("numYearXP").value),
-      title: document.getElementById("title").value,
-      description: document.getElementById("description").value,
-    };
+    let data = [
+      {
+        name: document.getElementById("name").value,
+        last_names: document.getElementById("lastName").value,
+        email: document.getElementById("email").value,
+        city: document.getElementById("city").value,
+        job_title: document.getElementById("puesto").value,
+        address: document.getElementById("address").value,
+        cc: parseInt(document.getElementById("numDocID").value),
+        gender: document.getElementById("gender").value,
+        year_experiences: parseInt(document.getElementById("numYearXP").value),
+        title: document.getElementById("title").value,
+        description: document.getElementById("description").value,
+      },
+    ];
 
-    console.log(data);
+    console.log(JSON.stringify(data));
 
     fetch(
-      "https://uz0m3atqdi.execute-api.us-east-2.amazonaws.com/dollarcity-api/job-applications",
+      "https://uz0m3atqdi.execute-api.us-east-2.amazonaws.com/dollarcity-api/job-applications/",
       {
         method: "POST",
         body: JSON.stringify(data),
@@ -84,17 +86,18 @@ export default function JobAplication() {
         },
       }
     )
-      .then((data) =>
-        data.json().then((response) => {
-          if (data.status >= 200 && data.status < 300) {
-            console.log(data);
-          } else if (data.status >= 500) {
-            console.log(data);
-          } else if (data.status >= 400 && data.status < 500) {
-            console.log(data);
-          }
-        })
-      )
+      .then((data) => {
+        console.log(data);
+        if (data.status >= 200 && data.status <= 300) {
+          window.alert(
+            "HAS APLICADO A UNO DE NUESTROS PUESTOS. " +
+              "\n" +
+              "->> LA PACIENCIA ES UNA VIRTUD <<--" +
+              "\n" +
+              "NO NOS LLAMES NOSOTROS TE LLAMAMOS"
+          );
+        }
+      })
       .catch(function (err) {
         console.log(err);
       });
