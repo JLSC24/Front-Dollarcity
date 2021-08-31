@@ -46,9 +46,13 @@ export default function Products() {
                       className="bg-dark text-white"
                       style={{ margin: "5%" }}
                     >
-                      <Card.Img
-                        src="https://source.unsplash.com/tG36rvCeqng/800x500"
-                        alt="Card image"
+                      <ImageContainer
+                        src="https://source.unsplash.com/tG36rvCeqng/400x250"
+                        alt="imagen de prueba"
+                        url="/img"
+                        height={208.75}
+                        width={334}
+                        onIsVisible={() => onIsVisible(1)}
                       />
                     </Card>
                   </Col>
@@ -156,7 +160,7 @@ export default function Products() {
               </Button>
 
               <div className="row">
-                <div className="col-xl-3 col-lg-4 col-md-6 mb-5">
+                <div className="col-xl-3 col-lg-4 col-md-6 mb-5 text-center">
                   <Card className="card lift h-100">
                     <div
                       className="card-flag card-flag-dark card-flag-top-right card-flag-lg"
@@ -164,20 +168,22 @@ export default function Products() {
                     >
                       $115
                     </div>
-                    <Link to="/">
-                      <div>
-                        <ImageContainer
-                          src="https://source.unsplash.com/tG36rvCeqng/400x250"
-                          alt="imagen de prueba"
-                          onIsVisible={() => onIsVisible(1)}
-                        />
-                      </div>
-                      {/* <img
-                        className="card-img-top"
-                        src="https://source.unsplash.com/tG36rvCeqng/800x500"
-                        alt="..."
-                      /> */}
-                    </Link>
+
+                    <div>
+                      <ImageContainer
+                        src="https://source.unsplash.com/tG36rvCeqng/400x250"
+                        alt="imagen de prueba"
+                        url="/img"
+                        height={208.75}
+                        width={334}
+                        onIsVisible={() => onIsVisible(1)}
+                      />
+                    </div>
+                    {/* <img
+                      className="card-img-top"
+                      src="https://source.unsplash.com/tG36rvCeqng/800x500"
+                      alt="..."
+                    /> */}
 
                     <div className="card-body p-3">
                       <div className="card-title small mb-0">Gray Bicycle</div>
