@@ -35,6 +35,12 @@ code {
   background-color: #536dfe !important;
   border: none !important;
 }
+.botonLogin {
+  background-color: #4caf50 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  min-height: 6.759002770083103vh;
+}
 
 .addToCart {
   position: fixed;
