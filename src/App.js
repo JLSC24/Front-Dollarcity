@@ -176,8 +176,8 @@ const AuthStateApp = () => {
         <AmplifyAuthenticator>
           <AmplifySignIn headerText="Dollarcity" slot="sign-in">
             <div slot="federated-buttons">
-              <AmplifyGoogleButton onClick={signInGoogle} />
-              <AmplifyFacebookButton onClick={signIn} />
+              {/* <AmplifyGoogleButton onClick={signInGoogle} />
+              <AmplifyFacebookButton onClick={signIn} /> */}
               <hr />
             </div>
           </AmplifySignIn>
