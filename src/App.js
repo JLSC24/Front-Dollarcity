@@ -10,6 +10,8 @@ import awsconfig from "./aws-exports";
 
 import { Row, Col, Button } from "react-bootstrap";
 
+import { FcGoogle } from "react-icons/fc";
+import { FaFacebook } from "react-icons/fa";
 Amplify.configure(awsconfig);
 
 const AuthStateApp = () => {
@@ -36,28 +38,28 @@ const AuthStateApp = () => {
         <AmplifyAuthenticator>
           <AmplifySignIn headerText="Dollarcity" slot="sign-in">
             <div slot="federated-buttons">
-              <Row>
-                <Col className="text-center">
+              <Row className="mb-1">
+                <Col>
                   <Button
-                    className="botonLogin"
-                    onClick={() => Auth.federatedSignIn()}
+                    className="botonFacebook"
+                    onClick={() =>
+                      Auth.federatedSignIn({ provider: "Facebook" })
+                    }
                   >
-                    <b style={{ fontSize: "14px" }}>
-                      INICIAR CON REDES SOCIALES
-                    </b>
+                    <FaFacebook size="2em" /> Iniciar con Facebook
                   </Button>
                 </Col>
               </Row>
-              <button
-                onClick={() => Auth.federatedSignIn({ provider: "Facebook" })}
-              >
-                Open Facebook
-              </button>
-              <button
-                onClick={() => Auth.federatedSignIn({ provider: "Google" })}
-              >
-                Open Google
-              </button>
+              <Row className="mb-1">
+                <Col>
+                  <Button
+                    className="botonGoogle"
+                    onClick={() => Auth.federatedSignIn({ provider: "Google" })}
+                  >
+                    <FcGoogle size="2em" /> Iniciar con Google
+                  </Button>
+                </Col>
+              </Row>
 
               <hr />
             </div>

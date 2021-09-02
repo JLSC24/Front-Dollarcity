@@ -35,11 +35,21 @@ code {
   background-color: #536dfe !important;
   border: none !important;
 }
-.botonLogin {
-  background-color: #4caf50 !important;
+
+.botonFacebook {
+  background-color: #1877f2 !important;
   border: none !important;
   border-radius: 0 !important;
   min-height: 6.759002770083103vh;
+  min-width: 100%;
+}
+.botonGoogle {
+  color: #000 !important;
+  background-color: #ffffff !important;
+  border-color: #000 !important;
+  border-radius: 0 !important;
+  min-height: 6.759002770083103vh;
+  min-width: 100%;
 }
 
 .addToCart {
