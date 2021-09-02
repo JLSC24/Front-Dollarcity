@@ -21,6 +21,7 @@ Amplify.configure(awsconfig);
 const AuthStateApp = () => {
   const [authState, setAuthState] = React.useState();
   const [user, setUser] = React.useState();
+
   React.useEffect(() => {
     if (!window.FB) createScript();
 
@@ -178,11 +179,14 @@ const AuthStateApp = () => {
             <div slot="federated-buttons">
               <AmplifyGoogleButton onClick={signInGoogle} />
               <AmplifyFacebookButton onClick={signIn} />
+              <button onClick={() => Auth.federatedSignIn()}>
+                Open Hosted UI
+              </button>
               <hr />
             </div>
           </AmplifySignIn>
         </AmplifyAuthenticator>
-        {/* <AmplifyAuthenticator></AmplifyAuthenticator> */}
+        {/* <AmplifyAuthenticator federated={federated}></AmplifyAuthenticator> */}
       </Row>
     </>
   );
