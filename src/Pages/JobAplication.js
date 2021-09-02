@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import { Button, Row, Col, Form, InputGroup } from "react-bootstrap";
+import { Button, Row, Col, Form } from "react-bootstrap";
 import { getPuesto } from "../contentfulFunctions";
 
 export default function JobAplication() {
@@ -313,7 +313,6 @@ export default function JobAplication() {
                       <Form.Label>Dirección</Form.Label>
                       <Form.Control
                         placeholder="Inserte su dirección aquí"
-                        id="title"
                         id="address"
                       />
                     </Form.Group>

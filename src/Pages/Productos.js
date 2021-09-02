@@ -1,5 +1,4 @@
 import React, { lazy, useEffect } from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import { Button, Modal, Card, Row, Col, Badge } from "react-bootstrap";
 
