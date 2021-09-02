@@ -173,7 +173,7 @@ const AuthStateApp = () => {
   ) : (
     <>
       <Row className="mb-3">
-        {/* <AmplifyAuthenticator>
+        <AmplifyAuthenticator>
           <AmplifySignIn headerText="Dollarcity" slot="sign-in">
             <div slot="federated-buttons">
               <AmplifyGoogleButton onClick={signInGoogle} />
@@ -181,8 +181,8 @@ const AuthStateApp = () => {
               <hr />
             </div>
           </AmplifySignIn>
-        </AmplifyAuthenticator> */}
-        <AmplifyAuthenticator></AmplifyAuthenticator>
+        </AmplifyAuthenticator>
+        {/* <AmplifyAuthenticator></AmplifyAuthenticator> */}
       </Row>
     </>
   );
