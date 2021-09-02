@@ -21,9 +21,6 @@ Amplify.configure(awsconfig);
 const AuthStateApp = () => {
   const [authState, setAuthState] = React.useState();
   const [user, setUser] = React.useState();
-  const federated = {
-    amazonClientId: "5rcnbbr5il30uo9em4u3lolaks", // Enter your amazonClientId here
-  };
   React.useEffect(() => {
     /* if (!window.FB) createScript();
 
@@ -185,7 +182,7 @@ const AuthStateApp = () => {
             </div>
           </AmplifySignIn>
         </AmplifyAuthenticator> */}
-        <AmplifyAuthenticator federated={federated}></AmplifyAuthenticator>
+        <AmplifyAuthenticator></AmplifyAuthenticator>
       </Row>
     </>
   );
