@@ -16,6 +16,7 @@ export default function Products() {
   const [dataProducts, setDataProducts] = React.useState(null);
   const [show, setShow] = React.useState(false);
   const [productsShoppingCar, setProductsShoppingCar] = React.useState([]);
+  const [dataRecomendada, setDataRecomendada] = React.useState([]);
   const [images, setImages] = React.useState([]);
   const [page, setPage] = React.useState(1);
   const [user, setUser] = React.useState(1);
@@ -41,7 +42,15 @@ export default function Products() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const addToShoppingCar = (data) => {
+  const addToShoppingCar = async (data) => {
+    //const result = await fetch("http://127.0.0.1:8000/model", {
+    //  method: "POST",
+    //  body: JSON.stringify(data),
+    //  headers: { Accept: "application/json" },
+    //});
+    //let dataPredict = await result.json();
+    //setDataRecomendada(dataPredict);
+    console.log(data);
     let temp = productsShoppingCar;
     temp.push(data);
     setProductsShoppingCar(temp);
